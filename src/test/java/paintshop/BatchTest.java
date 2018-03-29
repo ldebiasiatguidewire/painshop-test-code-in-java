@@ -8,6 +8,22 @@ import static org.junit.Assert.*;
 public class BatchTest {
 
     @Test
+    public void of_empty_order() {
+        final Batch batch = Batch.of(new Order(5, ImmutableList.of()));
+        assertEquals("G G G G G", batch.toString());
+    }
+
+    @Test
+    public void of_empty_customer() {
+        final Batch batch = Batch.of(new Order(
+                5,
+                ImmutableList.of(
+                        new Customer(ImmutableList.of())
+                )));
+        assertEquals("G G G G G", batch.toString());
+    }
+
+    @Test
     public void of_GGGGM() {
         final Batch batch = Batch.of(new Order(
                 5,
@@ -108,6 +124,28 @@ public class BatchTest {
                 ImmutableList.of(
                         new Customer(ImmutableList.of(new Color(0, Finish.G))),
                         new Customer(ImmutableList.of(new Color(0, Finish.M)))
+                )));
+        assertEquals("No solution exists", batch.toString());
+    }
+
+    @Test
+    public void of_zero_size_palette() {
+        final Batch batch = Batch.of(new Order(
+                0,
+                ImmutableList.of(
+                        new Customer(ImmutableList.of(
+                                new Color(0, Finish.M),
+                                new Color(2, Finish.G),
+                                new Color(4, Finish.G)
+                        )),
+                        new Customer(ImmutableList.of(
+                                new Color(1, Finish.G),
+                                new Color(2, Finish.M),
+                                new Color(3, Finish.G)
+                        )),
+                        new Customer(ImmutableList.of(
+                                new Color(4, Finish.M)
+                        ))
                 )));
         assertEquals("No solution exists", batch.toString());
     }
